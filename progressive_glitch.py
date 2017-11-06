@@ -9,12 +9,13 @@ except ImportError:
 
 from jpglitch import Jpeg
 
-class MyFirstGUI:
+# The GUI component of the program
+class imageGUI:
     def __init__(self, master):
         self.master = master
         master.title("A simple GUI")
 
-        self.label = Label(master, text="This is our first GUI!")
+        self.label = Label(master, text="Let's Glitch Images")
         self.label.pack()
 
         self.image_button = Button(master, text="Image", command=self.image_load)
@@ -26,14 +27,17 @@ class MyFirstGUI:
         self.close_button = Button(master, text="Close", command=master.quit)
         self.close_button.pack()
 
+    # This function is called when the glitch button is pressed
     def glitch(self):
-        print("Greetings!")
 
+        # Read the slected image file
         with open(self.filename, "rb") as image:
             image_bytes = bytearray(image.read())
 
+        # Initialize the Jpeg Class from jpglitch which scrambles the image
+        # Use predefined values for glitch amount, start point and iterations
         jpeg = Jpeg(image_bytes, 99, 10, 10)
-        print("\nScrambling your image with the following parameters:")
+        print("\nScrambling your image")
         # for key, value in jpeg.parameters.items():
         #     click.echo(message=key + ': ' + str(value))
         output = 0
@@ -47,9 +51,10 @@ class MyFirstGUI:
 
         name += '%s' % ('.jpg')
 
+        # Overwrite the original file with the glitched image so that we can continue glitching
         jpeg.save_image(self.filename)
 
-        output = "\nSucces! Checkout %s." % name
+        output = "\nSucces!"
         print(output)
 
     def image_load(self):
@@ -57,5 +62,5 @@ class MyFirstGUI:
         print(self.filename)
 
 root = Tk()
-my_gui = MyFirstGUI(root)
+my_gui = imageGUI(root)
 root.mainloop()

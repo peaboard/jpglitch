@@ -1,4 +1,4 @@
-# Adds a wrapper around the original  [jpglitch]: https://github.com/Kareeeeem/jpglitch code with a simple gui 
+# Adds a wrapper around the original  [jpglitch](https://github.com/Kareeeeem/jpglitch) code with a simple gui 
 
 ## Installation
 Clone the repo and run

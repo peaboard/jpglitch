@@ -68,7 +68,7 @@ class imageGUI:
 
         self.image_view()
 
-        output = "\nSucces!"
+        output = "\nSuccess!"
         print(output)
 
 

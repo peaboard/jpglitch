@@ -1,11 +1,11 @@
 try:
     # for Python2
     from Tkinter import *   ## notice capitalized T in Tkinter
-    from tkFileDialog import askopenfilename
+    from tkFileDialog import askopenfilename, asksaveasfilename
 except ImportError:
     # for Python3
     from tkinter import *   ## notice lowercase 't' in tkinter here
-    from tkinter.filedialog import askopenfilename
+    from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 from PIL import ImageTk, Image
 
@@ -30,6 +30,9 @@ class imageGUI:
         self.greet_button = Button(master, text="Glitch", command=self.glitch)
         self.greet_button.pack()
 
+        self.greet_button = Button(master, text="Save", command=self.save_image)
+        self.greet_button.pack()
+
         self.close_button = Button(master, text="Close", command=master.quit)
         self.close_button.pack()
 
@@ -46,7 +49,7 @@ class imageGUI:
 
         # Initialize the Jpeg Class from jpglitch which scrambles the image
         # Use predefined values for glitch amount, start point and iterations
-        jpeg = Jpeg(image_bytes, 99, 10, 10)
+        self.jpeg = Jpeg(image_bytes, 99, 10, 10)
         print("\nScrambling your image")
         # for key, value in jpeg.parameters.items():
         #     click.echo(message=key + ': ' + str(value))
@@ -62,7 +65,7 @@ class imageGUI:
         name += '%s' % ('.jpg')
 
         # Overwrite the original file with the glitched image so that we can continue glitching
-        jpeg.save_image(self.filename)
+        self.jpeg.save_image(self.filename)
 
         #self.app.loadImage(self.filename)
 
@@ -89,6 +92,13 @@ class imageGUI:
         self.ChLabel.image = self.CharPhoto
         self.ChLabel.configure(image=self.CharPhoto)
         self.ChLabel.pack(side = "bottom", fill = "both", expand = "yes")
+
+    def save_image(self):
+        self.save_as_name = asksaveasfilename(   #this will make the file path a string
+        defaultextension=".png",                 #so it's easier to check if it exists
+        filetypes = (("JPEG Image", "*.jpg"),    #in the save function
+                     ("PNG Image", "*.png")))    #Thank-You atlasologist (stackoverflow.com)
+        self.jpeg.save_image(self.save_as_name)
 
     def image_view(self):
         self.newImage = ImageTk.PhotoImage(Image.open(self.filename))

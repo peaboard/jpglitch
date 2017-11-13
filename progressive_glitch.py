@@ -11,9 +11,8 @@ from PIL import ImageTk, Image
 
 from jpglitch import Jpeg
 
-import webbrowser
-
-
+# TODO: If user opens new image after glitching it appends to window but old one is used again
+#       So basically currently works with only one image at a time
 
 # The GUI component of the program
 class imageGUI:
@@ -36,10 +35,6 @@ class imageGUI:
         self.close_button = Button(master, text="Close", command=master.quit)
         self.close_button.pack()
 
-        # self.newWindow = Toplevel(self.master)
-        # self.app = imageViewer(self.newWindow)
-
-
     # This function is called when the glitch button is pressed
     def glitch(self):
 
@@ -51,8 +46,7 @@ class imageGUI:
         # Use predefined values for glitch amount, start point and iterations
         self.jpeg = Jpeg(image_bytes, 99, 10, 10)
         print("\nScrambling your image")
-        # for key, value in jpeg.parameters.items():
-        #     click.echo(message=key + ': ' + str(value))
+
         output = 0
         if output:
             # TODO
@@ -67,32 +61,24 @@ class imageGUI:
         # Overwrite the original file with the glitched image so that we can continue glitching
         self.jpeg.save_image(self.filename)
 
-        #self.app.loadImage(self.filename)
-
         self.image_view()
 
         output = "\nSuccess!"
         print(output)
 
-
-        #webbrowser.open(self.filename)
-
-        #self.current_glitched_image.show()
-
-
-
     def image_load(self):
         self.filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-        #self.current_glitched_image = Image.open(self.filename)
-        #self.current_glitched_image.show()
         print(self.filename)
 
+        #Open and display Image in GUI window
         self.CharPhoto = ImageTk.PhotoImage(Image.open(self.filename))
         self.ChLabel = Label(self.master, image = self.CharPhoto)
+        # Make an instance of the image or it greys out
         self.ChLabel.image = self.CharPhoto
         self.ChLabel.configure(image=self.CharPhoto)
         self.ChLabel.pack(side = "bottom", fill = "both", expand = "yes")
 
+    # Option to save the image as a separate file
     def save_image(self):
         self.save_as_name = asksaveasfilename(   #this will make the file path a string
         defaultextension=".png",                 #so it's easier to check if it exists
@@ -100,33 +86,11 @@ class imageGUI:
                      ("PNG Image", "*.png")))    #Thank-You atlasologist (stackoverflow.com)
         self.jpeg.save_image(self.save_as_name)
 
+    # Upgate the displayed image on every glitch
     def image_view(self):
         self.newImage = ImageTk.PhotoImage(Image.open(self.filename))
         self.ChLabel.image = self.newImage
         self.ChLabel.configure(image=self.newImage)
-
-
-
-
-
-# class imageViewer:
-#
-#     def __init__(self, master):
-#         # Window for viewing image
-#         self.master = master
-#
-#         self.master.title("Join")
-#         self.master.geometry("300x300")
-#         self.master.configure(background='grey')
-#
-#     def loadImage(self, filename):
-#
-#         print(filename)
-#         img = ImageTk.PhotoImage(Image.open(filename))
-#         self.panel = Label(self.master, image = img)
-#         self.panel.pack(side = "bottom", fill = "both", expand = "yes")
-#         print("Image Loaded")
-#         self.master.configure(background='black')
 
 def main():
     root = Tk()
